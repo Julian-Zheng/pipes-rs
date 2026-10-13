@@ -1,0 +1,56 @@
+id: waymo-sim-pipeline
+
+simulation:
+  clock_rate_hz: 10.0
+  deterministic: true
+  max_frames: 200
+
+nodes:
+  # 1. Waymo Open Dataset mock source node streaming LiDAR, Camera, and Ego Poses
+  - id: waymo-source
+    path: target/debug/mock_waymo_source
+    outputs:
+      - lidar_top
+      - lidar_rear
+      - camera_front
+      - ego_pose
+
+  # 2. Perception filter simulating 3D detection with artificial compute jitter
+  - id: perception-filter
+    path: target/debug/perception_filter
+    inputs:
+      points:
+        source: waymo-source/lidar_top
+        queue:
+          policy: drop_oldest
+          capacity: 2
+      camera:
+        source: waymo-source/camera_front
+        queue:
+          policy: drop_oldest
+          capacity: 2
+    outputs:
+      - clusters_3d
+    simulation_jitter:
+      mean_delay_ms: 35
+      std_dev_ms: 8.0
+    rear_points:
+     source: waymo-source/lidar_rear
+     queue:
+       policy: drop_oldest
+       capacity: 2
+
+  # 3. Latency sink measuring end-to-end transport metrics and drop stats
+  - id: latency-sink
+    path: target/debug/latency_sink
+    inputs:
+      detections:
+        source: perception-filter/clusters_3d
+        queue:
+          policy: backpressure
+          capacity: 10
+      raw_lidar:
+        source: waymo-source/lidar_top
+        queue:
+          policy: drop_oldest
+          capacity: 4

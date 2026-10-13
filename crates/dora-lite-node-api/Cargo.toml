@@ -1,0 +1,15 @@
+[package]
+name = "dora-lite-node-api"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+dora-lite-core = { workspace = true }
+dora-lite-shm = { workspace = true }
+tokio.workspace = true
+bytes.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+serde_json.workspace = true

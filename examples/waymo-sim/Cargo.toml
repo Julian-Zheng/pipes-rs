@@ -1,0 +1,30 @@
+[package]
+name = "waymo-sim"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "mock_waymo_source"
+path = "src/bin/mock_waymo_source.rs"
+
+[[bin]]
+name = "perception_filter"
+path = "src/bin/perception_filter.rs"
+
+[[bin]]
+name = "latency_sink"
+path = "src/bin/latency_sink.rs"
+
+[dependencies]
+dora-lite-core = { workspace = true }
+dora-lite-shm = { workspace = true }
+dora-lite-node-api = { workspace = true }
+tokio = { workspace = true, features = ["full"] }
+tracing.workspace = true
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
+rand.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true

@@ -1,0 +1,29 @@
+[package]
+name = "dora-lite-runtime"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "dora-daemon"
+path = "src/bin/dora_daemon.rs"
+
+[dependencies]
+dora-lite-core = { workspace = true }
+dora-lite-shm = { workspace = true }
+dora-lite-node-api = { workspace = true }
+tokio = { workspace = true, features = ["full", "process"] }
+clap = { workspace = true, features = ["derive"] }
+tracing.workspace = true
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
+serde.workspace = true
+serde_json.workspace = true
+serde_yaml.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+rand.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["full", "test-util"] }
